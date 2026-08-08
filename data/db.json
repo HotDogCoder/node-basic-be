@@ -1,0 +1,52 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "Hello World",
+      "body": "My first post",
+      "userId": 1
+    },
+    {
+      "id": 2,
+      "title": "React Toolkit",
+      "body": "Learning RTK Query",
+      "userId": 1
+    },
+    {
+      "id": 3,
+      "title": "hola ",
+      "body": "hoasdkla",
+      "userId": 1
+    },
+    {
+      "id": 4,
+      "title": "hola ",
+      "body": "hoasdkla",
+      "userId": 1
+    },
+    {
+      "id": 5,
+      "title": "asds",
+      "body": "sadsa",
+      "userId": 1
+    },
+    {
+      "id": 6,
+      "title": "asdas",
+      "body": "asdasd",
+      "userId": 1
+    },
+    {
+      "id": 7,
+      "title": "test 1 ",
+      "body": "sadlkaskld",
+      "userId": 1
+    },
+    {
+      "id": 8,
+      "title": "asjdkj",
+      "body": "ajsdk",
+      "userId": 1
+    }
+  ]
+}
