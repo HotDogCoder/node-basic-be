@@ -19,6 +19,21 @@ app.use(express.json());
 // GET /posts
 app.get('/posts', async (req, res) => {
     try {
+        const {
+            page = 1,
+            pageSize = 10,
+            columnOrder = 'asc'
+        } = req.query;
+
+        const currentPage = Number(page);
+        const size = Number(pageSize);
+
+        if (currentPage < 1 || size < 1) {
+            return res.status(400).json({
+                message: 'page and pageSize must be greater than 0'
+            });
+        }
+
         const data = await fs.readFile(
             DB_PATH,
             'utf-8'
@@ -26,13 +41,54 @@ app.get('/posts', async (req, res) => {
 
         const db = JSON.parse(data);
 
-        res.json(db.posts);
+        let posts = [...db.posts];
+
+        // Ordenar por ID
+        posts.sort((a, b) => {
+            if (columnOrder === 'desc') {
+                return b.id - a.id;
+            }
+
+            return a.id - b.id;
+        });
+
+        // Información de paginación
+        const totalElements = posts.length;
+        const totalPages = Math.ceil(totalElements / size);
+
+        // Calcular posición inicial
+        const startIndex = (currentPage - 1) * size;
+
+        // Obtener solamente los elementos de la página
+        const content = posts.slice(
+            startIndex,
+            startIndex + size
+        );
+
+        res.json({
+            content,
+            pageable: {
+                pageNumber: currentPage,
+                pageSize: size
+            },
+            last: currentPage >= totalPages,
+            totalPages,
+            totalElements,
+            size,
+            number: currentPage,
+            sort: {
+                sorted: columnOrder === 'asc'
+            },
+            first: currentPage === 1,
+            numberOfElements: content.length,
+            empty: content.length === 0
+        });
 
     } catch (error) {
         console.error(error);
 
         res.status(500).json({
-            message: 'Error reading database',
+            message: 'Error reading database'
         });
     }
 });
@@ -118,6 +174,8 @@ app.post('/posts', async (req, res) => {
         });
     }
 });
+
+
 
 app.listen(PORT, () => {
     console.log(
