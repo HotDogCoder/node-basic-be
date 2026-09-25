@@ -175,6 +175,59 @@ app.post('/posts', async (req, res) => {
     }
 });
 
+// DELETE /posts/:id
+app.delete('/posts/:id', async (req, res) => {
+    try {
+        const data = await fs.readFile(DB_PATH, 'utf-8');
+        const db = JSON.parse(data);
+
+        const id = Number(req.params.id);
+        const index = db.posts.findIndex((post) => post.id === id);
+
+        if (index === -1) {
+            return res.status(404).json({ message: 'Post not found' });
+        }
+
+        const [deletedPost] = db.posts.splice(index, 1);
+
+        await fs.writeFile(DB_PATH, JSON.stringify(db, null, 2));
+
+        res.json(deletedPost);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error deleting post' });
+    }
+});
+
+// PUT /posts/:id
+app.put('/posts/:id', async (req, res) => {
+    try {
+        const { title, body, userId } = req.body;
+
+        if (!title || !body) {
+            return res.status(400).json({ message: 'Title and body are required' });
+        }
+
+        const data = await fs.readFile(DB_PATH, 'utf-8');
+        const db = JSON.parse(data);
+
+        const id = Number(req.params.id);
+        const index = db.posts.findIndex((post) => post.id === id);
+
+        if (index === -1) {
+            return res.status(404).json({ message: 'Post not found' });
+        }
+
+        db.posts[index] = { id, title, body, userId };
+
+        await fs.writeFile(DB_PATH, JSON.stringify(db, null, 2));
+
+        res.json(db.posts[index]);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error updating post' });
+    }
+});
 
 
 app.listen(PORT, () => {

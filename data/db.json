@@ -1,15 +1,9 @@
 {
   "posts": [
     {
-      "id": 1,
-      "title": "Hello World",
-      "body": "My first post",
-      "userId": 1
-    },
-    {
       "id": 2,
       "title": "React Toolkit",
-      "body": "Learning RTK Query",
+      "body": "Editado si",
       "userId": 1
     },
     {
@@ -46,6 +40,12 @@
       "id": 8,
       "title": "asjdkj",
       "body": "ajsdk",
+      "userId": 1
+    },
+    {
+      "id": 9,
+      "title": "Hola mundo cruel",
+      "body": "adios mundo cruel",
       "userId": 1
     }
   ]
